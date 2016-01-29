@@ -1,0 +1,25 @@
+<!doctype html>
+<meta charset=utf-8>
+<title>Codegolf IDE</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.11.0/codemirror.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.11.0/codemirror.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.11.0/mode/xml/xml.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.11.0/mode/javascript/javascript.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.11.0/mode/css/css.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.11.0/mode/htmlmixed/htmlmixed.js"></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{height:100%}
+textarea,.CodeMirror,iframe{width:50%;height:100%;float:left}
+</style>
+<textarea id=t>&lt;body id=b>
+  Hello World!
+  &lt;script>console.log("ok")&lt;/script>
+  &lt;style>*{color:blue}&lt;/style>
+&lt;/body>
+</textarea>
+<iframe id=f></iframe>
+<script>
+onload=oninput=function(){console.clear();f.srcdoc=t.value};
+CodeMirror.fromTextArea(t,{lineNumbers:true,mode:"htmlmixed"});
+</script>
