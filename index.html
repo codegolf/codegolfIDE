@@ -20,6 +20,6 @@ textarea,.CodeMirror,iframe{width:50%;height:100%;float:left}
 </textarea>
 <iframe id=f></iframe>
 <script>
-onload=oninput=function(){console.clear();f.srcdoc=t.value};
-CodeMirror.fromTextArea(t,{lineNumbers:true,mode:"htmlmixed"});
+onload=oninput=function(){console.clear();f.srcdoc=e.getValue()};
+e=CodeMirror.fromTextArea(t,{lineNumbers:true,mode:"htmlmixed"});
 </script>
