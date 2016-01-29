@@ -16,10 +16,16 @@ textarea,.CodeMirror,iframe{width:50%;height:100%;float:left}
   Hello World!
   &lt;script>console.log("ok")&lt;/script>
   &lt;style>*{color:blue}&lt;/style>
-&lt;/body>
-</textarea>
+&lt;/body></textarea>
 <iframe id=f></iframe>
 <script>
-onload=oninput=function(){console.clear();f.srcdoc=e.getValue()};
-e=CodeMirror.fromTextArea(t,{lineNumbers:true,mode:"htmlmixed"});
+onload=function(){
+  if(location.hash)t.value=decodeURI(location.hash.slice(1));
+  e=CodeMirror.fromTextArea(t,{lineNumbers:true,lineWrapping:true,mode:"htmlmixed"});
+  f.srcdoc=e.getValue()
+};
+onkeyup=function(){
+  console.clear();
+  location.hash=encodeURI(f.srcdoc=e.getValue())
+};
 </script>
