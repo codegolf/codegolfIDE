@@ -57,12 +57,15 @@ custom_console="<script>console.old_log=console.log;console.log=function(text){t
 
 console.old_log=console.log;
 console.log=function(text){
-  top.myconsole.innerHTML+=text+'\n';top.myconsole.scrollTop=1e8;console.old_log(text);
+  top.myconsole.innerHTML+=text+'\n';
+  top.myconsole.scrollTop=1e8;
+  console.old_log(text);
 }
 
 console.old_clear=console.clear;
 console.clear=function(){
-  top.myconsole.innerHTML='';console.old_clear();
+  top.myconsole.innerHTML='';
+  console.old_clear();
 }
 
 // Read hash
@@ -120,7 +123,8 @@ minify.onclick=function(){
   xhr=new XMLHttpRequest();
   xhr.open("POST", "https://closure-compiler.appspot.com/compile", true);
   xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");  
-  xhr.send("language=ECMASCRIPT6&output_info=compiled_code&js_code="+encodeURI(input));
+  conole.log(encodeURIComponent(input));
+  xhr.send("language=ECMASCRIPT6&output_info=compiled_code&js_code="+encodeURIComponent(input));
   xhr.onload=function(){
     min=xhr.response.replace(/\r|\n|(;*\n*$)/,"");
     console.log(min+"\n\n// "+min.length+" chars minified (original: "+input.length+")");
@@ -172,7 +176,7 @@ minpack.onclick=function(){
   xhr=new XMLHttpRequest();
   xhr.open("POST", "https://closure-compiler.appspot.com/compile", true);
   xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");  
-  xhr.send("language=ECMASCRIPT6&output_info=compiled_code&js_code="+encodeURI(input));
+  xhr.send("language=ECMASCRIPT6&output_info=compiled_code&js_code="+encodeURIComponent(input));
   xhr.onload=function(){
     min=xhr.response.replace(/\r|\n|(;*\n*$)/,"");
     min=regpack(min);
