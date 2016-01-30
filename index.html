@@ -2,29 +2,22 @@
 <meta charset=utf-8>
 <title>Codegolf IDE</title>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.11.0/codemirror.css">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.11.0/codemirror.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.11.0/mode/xml/xml.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.11.0/mode/javascript/javascript.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.11.0/mode/css/css.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.11.0/mode/htmlmixed/htmlmixed.js"></script>
-<script src="http://siorki.github.io/contextDescriptor_browser.js"></script>
-<script src="http://siorki.github.io/packerData.js"></script>
-<script src="http://siorki.github.io/shapeShifter.js"></script>
-<script src="http://siorki.github.io/regPack.js"></script>
-<script src="http://siorki.github.io/patternViewer.js"></script>
 <style>
-*{margin:0;padding:0;border:0;box-sizing:border-box}
-html,body{height:100%}
+*{margin:0;padding:0;border:0;box-sizing:border-box;vertical-align:middle}
+html,body{height:100%;font:12px arial}
 .CodeMirror,#iframe{width:50%;height:100%;float:left;transition:.5s}
 #iframe{border-left:1px solid}
 #toggle{position:fixed;bottom:0;left:50%;transform:translateX(-50%);z-index:50;transition:.5s}
-#toggle:checked{bottom:200px;transform:translateX(-50%) translateY(50%)}
-#menu{position:fixed;bottom:-200px;height:200px;width:100%;border-top:1px solid;z-index:2;transition:.5s}
+#toggle:checked{bottom:150px;transform:translateX(-50%) translateY(50%)}
+#menu{position:fixed;bottom:-150px;height:150px;width:100%;border-top:1px solid;z-index:2;transition:.5s}
 #toggle:checked~#menu{bottom:0}
-#toggle:checked~.CodeMirror,#toggle:checked~#iframe{height:calc(100% - 200px);bottom:0}
-#myconsole{float:right;height:200px;width:calc(100% - 90px);border-left:1px solid;padding:5px;-moz-control-character-visibility:visible;resize:none}
-button{display:block;border:1px solid;margin:5px;padding:3px 0;width:80px;cursor:pointer}
-button:active{background:#aaa}
+#toggle:checked~.CodeMirror,#toggle:checked~#iframe{height:calc(100% - 150px);bottom:0}
+#myconsole{float:right;height:150px;width:calc(100% - 120px);border-left:1px solid;padding:5px;-moz-control-character-visibility:visible;resize:none}
+button,a{height:20px;line-height:18px;float:left;border:1px solid;margin:5px 0 0 5px;width:110px;cursor:pointer;text-align:center;color:#000;background:#eee;text-decoration:none}
+button:active,a.active{background:#aaa}
+button.half,a.half{width:53px}
+input[type=text]{width:16px;height:17px;line-height:15px;font-size:12px;border:1px solid;margin:5px 2px 5px 4px;text-align:center}
+b{display:block;float:left;margin:8px 5px 0}
 </style>
 <input type=checkbox id=toggle title="Toggle dev tools">
 <textarea id=code>&lt;body id=b>
@@ -34,46 +27,70 @@ button:active{background:#aaa}
 &lt;/body></textarea>
 <iframe id=iframe></iframe>
 <div id=menu>
-  <textarea id=myconsole></textarea>
-  <button id=save>Save</button>
-  <button id=load>Load</button>
-  <button id=share>Share</button>
-  <button id=minify>Minify</button>
-  <button id=pack>Pack</button>
-  <button id=minpack>Min+pack</button>
+  <textarea id=myconsole readonly spellcheck=off></textarea>
+  <button id=save class=half>Save</button>
+  <button id=load class=half>Load</button>
+  <a download=index.html id=download class=half>Export</a>
+  <button id=share class=half>Share</button>
+  <button id=minify class=half>Minify</button>
+  <button id=pack class=half>Pack</button>
+  <button id=minpack>Minify + pack</button>
+  <b>RegPack options:</b>
+  <input id=gain type=text value=1 title=gain>g
+  <input id=length type=text value=0 title=length>l
+  <input id=copies type=text value=0 title=copies>c
+  <input id=mode type=checkbox checked title="longest string first">⇅
 </div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.11.0/codemirror.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.11.0/mode/xml/xml.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.11.0/mode/javascript/javascript.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.11.0/mode/css/css.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.11.0/mode/htmlmixed/htmlmixed.js"></script>
+<script src="http://siorki.github.io/contextDescriptor_browser.js"></script>
+<script src="http://siorki.github.io/packerData.js"></script>
+<script src="http://siorki.github.io/shapeShifter.js"></script>
+<script src="http://siorki.github.io/regPack.js"></script>
 <script>
 
 // Custom_console
 custom_console="<script>console.old_log=console.log;console.log=function(text){top.myconsole.innerHTML+=text+'\\n';top.myconsole.scrollTop=1e8;console.old_log(text)};console.old_clear=console.clear;console.clear=function(){ top.myconsole.innerHTML='';console.old_clear()}<\/script>";
 
 console.old_log=console.log;
-
 console.log=function(text){
   top.myconsole.innerHTML+=text+'\n';top.myconsole.scrollTop=1e8;console.old_log(text);
 }
 
 console.old_clear=console.clear;
-
 console.clear=function(){
   top.myconsole.innerHTML='';console.old_clear();
 }
 
 // Read hash
 if(location.hash){
-  code.value=decodeURI(location.hash.slice(1));location.hash="";
+  code.value=decodeURI(location.hash.slice(1));
+  location.hash="";
 }
 
 // Use CodeMirror
 editor=CodeMirror.fromTextArea(code,{lineNumbers:true,lineWrapping:true,mode:"htmlmixed"});
+input=editor.getValue();
 
 // Update iframe
 iframe.srcdoc=custom_console+editor.getValue();
 
-// After typing code, clear console and update iframe
+// Update download link
+download.href="data:text/html,"+encodeURI(editor.getValue());
+
+// Update cpunt
+document.title=input.length+" chars - Codegolf IDE";
+
+// After typing code, clear console and update iframe and export link
 editor.on("keyup",function(){
   console.clear();
-  iframe.srcdoc=custom_console+editor.getValue();
+  input=editor.getValue();
+  iframe.srcdoc=custom_console+input;
+  download.href="data:text/html,"+encodeURI(input);
+  document.title=input.length+" chars - Codegolf IDE";
 });
 
 // Save
@@ -83,10 +100,15 @@ save.onclick=function(){
 
 // Load
 load.onclick=function(){
+  console.clear();
   editor.setValue(localStorage["code"]);
+  input=editor.getValue();
+  iframe.srcdoc=custom_console+input;
+  download.href="data:text/html,"+encodeURI(input);
+  document.title=input.length+" chars - Codegolf IDE";
 }
 
-// Shate
+// Share
 share.onclick=function(){
   myconsole.innerHTML="http://codegolf.github.io/codegolfIDE/#"+encodeURI(editor.getValue());
 }
@@ -107,7 +129,22 @@ minify.onclick=function(){
 
 // Pack
 regpack=function(input){
-	options={withMath:false,hash2DContext:false,hashWebGLContext:false,hashAudioContext:false,contextVariableName:false,contextType:0,reassignVars:false,varsNotReassigned:[],crushGainFactor:1,crushLengthFactor:0,crushCopiesFactor:0,crushTiebreakerFactor:1,wrapInSetInterval:false,timeVariableName:""};
+	options={
+    withMath:false,
+    hash2DContext:false,
+    hashWebGLContext:false,
+    hashAudioContext:false,
+    contextVariableName:false,
+    contextType:0,
+    reassignVars:false,
+    varsNotReassigned:[],
+    crushGainFactor:+gain.value,
+    crushLengthFactor:+length.value,
+    crushCopiesFactor:+copies.value,
+    crushTiebreakerFactor:+mode.checked,
+    wrapInSetInterval:false,
+    timeVariableName:""
+  };
   inputList=packer.runPacker(input,options);
   results=inputList[0].result;
   shortest=0;
