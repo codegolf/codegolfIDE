@@ -70,7 +70,7 @@ console.clear=function(){
 
 // Read hash
 if(location.hash){
-  code.value=decodeURI(location.hash.slice(1));
+  code.value=decodeURIComponent(location.hash.slice(1));
   location.hash="";
 }
 
@@ -82,17 +82,17 @@ input=editor.getValue();
 iframe.srcdoc=custom_console+editor.getValue();
 
 // Update download link
-download.href="data:text/html,"+encodeURI(editor.getValue());
+download.href="data:text/html,"+encodeURIComponent(editor.getValue());
 
-// Update cpunt
+// Update count
 document.title=input.length+" chars - Codegolf IDE";
 
 // After typing code, clear console and update iframe and export link
 editor.on("keyup",function(){
   console.clear();
   input=editor.getValue();
-  iframe.srcdoc=custom_console+input;
-  download.href="data:text/html,"+encodeURI(input);
+  iframe.srcdoc=custom_console+editor.getValue();
+  download.href="data:text/html,"+encodeURIComponent(input);
   document.title=input.length+" chars - Codegolf IDE";
 });
 
@@ -106,14 +106,14 @@ load.onclick=function(){
   console.clear();
   editor.setValue(localStorage["code"]);
   input=editor.getValue();
-  iframe.srcdoc=custom_console+input;
-  download.href="data:text/html,"+encodeURI(input);
+  iframe.srcdoc=custom_console+editor.getValue();
+  download.href="data:text/html,"+encodeURIComponent(input);
   document.title=input.length+" chars - Codegolf IDE";
 }
 
 // Share
 share.onclick=function(){
-  myconsole.innerHTML="http://codegolf.github.io/codegolfIDE/#"+encodeURI(editor.getValue());
+  myconsole.innerHTML="http://codegolf.github.io/codegolfIDE/#"+encodeURIComponent(editor.getValue());
 }
 
 // Minify
