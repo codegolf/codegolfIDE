@@ -123,7 +123,6 @@ minify.onclick=function(){
   xhr=new XMLHttpRequest();
   xhr.open("POST", "https://closure-compiler.appspot.com/compile", true);
   xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");  
-  console.log(encodeURIComponent(input));
   xhr.send("language=ECMASCRIPT6&output_info=compiled_code&js_code="+encodeURIComponent(input));
   xhr.onload=function(){
     min=xhr.response.replace(/\r|\n|(;*\n*$)/,"");
