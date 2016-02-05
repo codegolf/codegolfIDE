@@ -8,12 +8,12 @@ html,body{height:100%;font:12px arial}
 .CodeMirror,#iframe{width:50%;height:100%;float:left;transition:.5s}
 #iframe{border-left:1px solid}
 #toggle{position:fixed;bottom:0;left:50%;transform:translateX(-50%);z-index:50;transition:.5s}
-#toggle:checked{bottom:150px;transform:translateX(-50%) translateY(50%)}
-#menu{position:fixed;bottom:-150px;height:150px;width:100%;border-top:1px solid;z-index:2;transition:.5s}
+#toggle:checked{bottom:170px;transform:translateX(-50%) translateY(50%)}
+#menu{position:fixed;bottom:-150px;height:170px;width:100%;border-top:1px solid;z-index:2;transition:.5s}
 #toggle:checked~#menu{bottom:0}
-#toggle:checked~.CodeMirror,#toggle:checked~#iframe{height:calc(100% - 150px);bottom:0}
-#myconsole{float:right;height:150px;width:calc(100% - 120px);border-left:1px solid;padding:5px;-moz-control-character-visibility:visible;resize:none}
-button,a{height:20px;line-height:18px;float:left;border:1px solid;margin:5px 0 0 5px;width:110px;cursor:pointer;text-align:center;color:#000;background:#eee;text-decoration:none}
+#toggle:checked~.CodeMirror,#toggle:checked~#iframe{height:calc(100% - 170px);bottom:0}
+#myconsole{float:right;height:170px;width:calc(100% - 120px);border-left:1px solid;padding:5px;-moz-control-character-visibility:visible;resize:none}
+button,a{height:25px;line-height:25px;float:left;border:1px solid;margin:5px 0 0 5px;width:110px;cursor:pointer;text-align:center;color:#000;background:#eee;text-decoration:none}
 button:active,a.active{background:#aaa}
 button.half,a.half{width:53px}
 input[type=text]{width:16px;height:17px;line-height:15px;font-size:12px;border:1px solid;margin:5px 2px 5px 4px;text-align:center}
@@ -123,7 +123,7 @@ minify.onclick=function(){
   xhr=new XMLHttpRequest();
   xhr.open("POST", "https://closure-compiler.appspot.com/compile", true);
   xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");  
-  xhr.send("language=ECMASCRIPT6&output_info=compiled_code&js_code="+encodeURIComponent(input));
+  xhr.send("language=ECMASCRIPT6&compilation_level=ADVANCED_OPTIMIZATIONS&output_info=compiled_code&js_code="+encodeURIComponent(input));
   xhr.onload=function(){
     min=xhr.response.replace(/\r|\n|(;*\n*$)/,"");
     console.log(min+"\n\n// "+min.length+" chars minified (original: "+input.length+")");
@@ -175,7 +175,7 @@ minpack.onclick=function(){
   xhr=new XMLHttpRequest();
   xhr.open("POST", "https://closure-compiler.appspot.com/compile", true);
   xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");  
-  xhr.send("language=ECMASCRIPT6&output_info=compiled_code&js_code="+encodeURIComponent(input));
+  xhr.send("language=ECMASCRIPT6&compilation_level=ADVANCED_OPTIMIZATIONS&output_info=compiled_code&js_code="+encodeURIComponent(input));
   xhr.onload=function(){
     min=xhr.response.replace(/\r|\n|(;*\n*$)/,"");
     min=regpack(min);
